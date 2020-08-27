@@ -115,5 +115,43 @@ You earned 0 credits
 `, result)
 }); 
 
+test('statement test case4', t => {
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'hamlet',
+        'audience': 31,
+      },
+      {
+        'playID': 'as-like',
+        'audience': 19,
+      },
+    ],
+  };
+
+  const plays = {
+    'hamlet': {
+      'name': 'Hamlet',
+      'type': 'tragedy',
+    },
+    'as-like': {
+      'name': 'As You Like It',
+      'type': 'comedy',
+    },
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy',
+    },
+  }; 
+  const result = statement(invoice, plays);
+  t.is(`Statement for BigCo
+ Hamlet: $410.00 (31 seats)
+ As You Like It: $357.00 (19 seats)
+Amount owed is $767.00
+You earned 4 credits 
+`, result)
+}); 
+
 
 
