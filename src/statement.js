@@ -45,10 +45,6 @@ const invoice = {
   'customer': 'BigCo',
   'performances': [
     {
-      'playID': 'hamlet',
-      'audience': 31,
-    },
-    {
       'playID': 'as-like',
       'audience': 19,
     },

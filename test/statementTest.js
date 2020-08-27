@@ -153,5 +153,107 @@ You earned 4 credits
 `, result)
 }); 
 
+test('statement test case5', t => {
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'hamlet',
+        'audience': 28,
+      },
+      {
+        'playID': 'as-like',
+        'audience': 21,
+      },
+    ],
+  };
 
+  const plays = {
+    'hamlet': {
+      'name': 'Hamlet',
+      'type': 'tragedy',
+    },
+    'as-like': {
+      'name': 'As You Like It',
+      'type': 'comedy',
+    },
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy',
+    },
+  }; 
+  const result = statement(invoice, plays);
+  t.is(`Statement for BigCo
+ Hamlet: $400.00 (28 seats)
+ As You Like It: $468.00 (21 seats)
+Amount owed is $868.00
+You earned 4 credits 
+`, result)
+}); 
+
+test('statement test case6', t => {
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'hamlet',
+        'audience': 31,
+      },
+    ],
+  };
+
+  const plays = {
+    'hamlet': {
+      'name': 'Hamlet',
+      'type': 'tragedy',
+    },
+    'as-like': {
+      'name': 'As You Like It',
+      'type': 'comedy',
+    },
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy',
+    },
+  }; 
+  const result = statement(invoice, plays);
+  t.is(`Statement for BigCo
+ Hamlet: $410.00 (31 seats)
+Amount owed is $410.00
+You earned 1 credits 
+`, result)
+}); 
+
+test('statement test case7', t => {
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'as-like',
+        'audience': 19,
+      },
+    ],
+  };
+
+  const plays = {
+    'hamlet': {
+      'name': 'Hamlet',
+      'type': 'tragedy',
+    },
+    'as-like': {
+      'name': 'As You Like It',
+      'type': 'comedy',
+    },
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy',
+    },
+  }; 
+  const result = statement(invoice, plays);
+  t.is(`Statement for BigCo
+ As You Like It: $357.00 (19 seats)
+Amount owed is $357.00
+You earned 3 credits 
+`, result)
+}); 
 
