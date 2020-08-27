@@ -48,59 +48,53 @@ const calTotalAmount = (invoice, plays) => {
 }
 
 const generateResult = (invoice, plays) => {
-  let result = `Statement for ${invoice.customer}\n`;
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
-    result += ` ${play.name}: ${formatToUs(getThisAmount(play, perf))} (${perf.audience} seats)\n`;
+  let data = summaryData(invoice, plays)
+  let result = `Statement for ${data.customer}\n`;
+  for (let item of data.items) {
+    result += ` ${item.name}: ${item.thisAmount} (${item.audience} seats)\n`;
   }
-  result += `Amount owed is ${formatToUs(calTotalAmount(invoice, plays))}\n`;
-  result += `You earned ${calVolumeCredits(invoice, plays)} credits \n`;
+  result += `Amount owed is ${data.totalAmount}\n`;
+  result += `You earned ${data.valumeCredits} credits \n`;
   return result
 }
 
-
+const summaryData = (invoice, plays) => {
+  let data = {
+    customer: '',
+    items: [],
+    totalAmount: '',
+    valumeCredits: ''
+  }
+  data.customer = invoice.customer;
+  for (let perf of invoice.performances) {
+    const play = plays[perf.playID];
+    data.items.push({
+      name: play.name,
+      thisAmount: formatToUs(getThisAmount(play, perf)),
+      audience: perf.audience
+    })
+  }
+  data.totalAmount = formatToUs(calTotalAmount(invoice, plays))
+  data.valumeCredits = calVolumeCredits(invoice, plays)
+  return data
+}
 
 function statement (invoice, plays) {
   return generateResult(invoice, plays);
 }
 
 const generateHtml = (invoice, plays) => {
-  let result = `<h1>Statement for ${invoice.customer}</h1>\n` + '<table>\n' +
+  let data = summaryData(invoice, plays)
+  let result = `<h1>Statement for ${data.customer}</h1>\n` + '<table>\n' +
   '<tr><th>play</th><th>seats</th><th>cost</th></tr>';
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
-    result += ` <tr><td>${play.name}</td><td>${formatToUs(getThisAmount(play, perf))}</td><td>${perf.audience}</td></tr>\n`
+  for (let item of data.items) {
+    result += ` <tr><td>${item.name}</td><td>${item.thisAmount}</td><td>${item.audience}</td></tr>\n`
   }
   result += '</table>\n'
-  result += `<p>Amount owed is <em>${formatToUs(calTotalAmount(invoice, plays))}</em></p>\n`
-  result += `<p>You earned <em>${calVolumeCredits(invoice, plays)}</em> credits</p>\n`
+  result += `<p>Amount owed is <em>${data.totalAmount}</em></p>\n`
+  result += `<p>You earned <em>${data.valumeCredits}</em> credits</p>\n`
   return result
 }
-
-const invoice = {
-  'customer': 'BigCo2',
-  'performances': [
-    {
-      'playID': 'as-like',
-      'audience': 20,
-    },
-  ],
-};
-const plays = {
-  'hamlet': {
-    'name': 'Hamlet',
-    'type': 'tragedy',
-  },
-  'as-like': {
-    'name': 'As You Like It',
-    'type': 'comedy',
-  },
-  'othello': {
-    'name': 'Othello',
-    'type': 'tragedy',
-  },
-};
-console.log(generateHtml(invoice, plays))
 
 module.exports = {
   statement,
