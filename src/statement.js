@@ -42,8 +42,7 @@ const calTotalAmount = (invoice, plays) => {
   let totalAmount = 0;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = getThisAmount(play, perf)
-    totalAmount += thisAmount;
+    totalAmount += getThisAmount(play, perf);
   }
   return totalAmount
 }
