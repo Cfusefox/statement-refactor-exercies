@@ -58,7 +58,6 @@ const generateResult = (invoice, plays) => {
   return result
 }
 
-
 function statement (invoice, plays) {
   return generateResult(invoice, plays);
 }
