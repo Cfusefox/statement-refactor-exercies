@@ -51,8 +51,7 @@ const generateResult = (invoice, plays) => {
   let result = `Statement for ${invoice.customer}\n`;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = getThisAmount(play, perf)
-    result += ` ${play.name}: ${formatToUs(thisAmount)} (${perf.audience} seats)\n`;
+    result += ` ${play.name}: ${formatToUs(getThisAmount(play, perf))} (${perf.audience} seats)\n`;
   }
   result += `Amount owed is ${formatToUs(calTotalAmount(invoice, plays))}\n`;
   result += `You earned ${calVolumeCredits(invoice, plays)} credits \n`;
