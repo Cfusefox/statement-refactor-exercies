@@ -1,5 +1,5 @@
 const test = require('ava');
-const {statement, generateHtml} = require('../src/statement');
+const {statement, htmlStatement} = require('../src/statement');
 
 const plays = {
   'hamlet': {
@@ -172,7 +172,7 @@ test('generateHtml case 1', t => {
       },
     ],
   };
-  const result = generateHtml(invoice, plays)
+  const result = htmlStatement(invoice, plays)
   t.is(result, `<h1>Statement for BigCo2</h1>
 <table>
 <tr><th>play</th><th>seats</th><th>cost</th></tr> <tr><td>As You Like It</td><td>$360.00</td><td>20</td></tr>

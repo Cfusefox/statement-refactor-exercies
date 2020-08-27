@@ -47,14 +47,25 @@ const calTotalAmount = (invoice, plays) => {
   return totalAmount
 }
 
-const generateResult = (invoice, plays) => {
-  let data = summaryData(invoice, plays)
+const generateText = (data) => {
   let result = `Statement for ${data.customer}\n`;
   for (let item of data.items) {
     result += ` ${item.name}: ${item.thisAmount} (${item.audience} seats)\n`;
   }
   result += `Amount owed is ${data.totalAmount}\n`;
   result += `You earned ${data.valumeCredits} credits \n`;
+  return result
+}
+
+const generateHtml = (data) => {
+  let result = `<h1>Statement for ${data.customer}</h1>\n` + '<table>\n' +
+  '<tr><th>play</th><th>seats</th><th>cost</th></tr>';
+  for (let item of data.items) {
+    result += ` <tr><td>${item.name}</td><td>${item.thisAmount}</td><td>${item.audience}</td></tr>\n`
+  }
+  result += '</table>\n'
+  result += `<p>Amount owed is <em>${data.totalAmount}</em></p>\n`
+  result += `<p>You earned <em>${data.valumeCredits}</em> credits</p>\n`
   return result
 }
 
@@ -80,23 +91,15 @@ const summaryData = (invoice, plays) => {
 }
 
 function statement (invoice, plays) {
-  return generateResult(invoice, plays);
+  return generateText(summaryData(invoice, plays));
 }
 
-const generateHtml = (invoice, plays) => {
-  let data = summaryData(invoice, plays)
-  let result = `<h1>Statement for ${data.customer}</h1>\n` + '<table>\n' +
-  '<tr><th>play</th><th>seats</th><th>cost</th></tr>';
-  for (let item of data.items) {
-    result += ` <tr><td>${item.name}</td><td>${item.thisAmount}</td><td>${item.audience}</td></tr>\n`
-  }
-  result += '</table>\n'
-  result += `<p>Amount owed is <em>${data.totalAmount}</em></p>\n`
-  result += `<p>You earned <em>${data.valumeCredits}</em> credits</p>\n`
-  return result
+function htmlStatement(invoice, plays) {
+  return generateHtml(summaryData(invoice, plays));
 }
+
 
 module.exports = {
   statement,
-  generateHtml
+  htmlStatement
 };
