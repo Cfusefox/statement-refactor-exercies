@@ -177,7 +177,7 @@ test('generateHtml case 1', t => {
 <table>
 <tr><th>play</th><th>seats</th><th>cost</th></tr> <tr><td>As You Like It</td><td>$360.00</td><td>20</td></tr>
 </table>
-Amount owed is $360.00
+<p>Amount owed is <em>$360.00</em></p>
 <p>You earned <em>4</em> credits</p>
 `);
 })

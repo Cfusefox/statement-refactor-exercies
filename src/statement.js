@@ -58,6 +58,8 @@ const generateResult = (invoice, plays) => {
   return result
 }
 
+
+
 function statement (invoice, plays) {
   return generateResult(invoice, plays);
 }
@@ -70,10 +72,35 @@ const generateHtml = (invoice, plays) => {
     result += ` <tr><td>${play.name}</td><td>${formatToUs(getThisAmount(play, perf))}</td><td>${perf.audience}</td></tr>\n`
   }
   result += '</table>\n'
-  result += `Amount owed is ${formatToUs(calTotalAmount(invoice, plays))}\n`;`<p>Amount owed is <em>${formatToUs(calTotalAmount(invoice, plays))}</em></p>\n`
+  result += `<p>Amount owed is <em>${formatToUs(calTotalAmount(invoice, plays))}</em></p>\n`
   result += `<p>You earned <em>${calVolumeCredits(invoice, plays)}</em> credits</p>\n`
   return result
 }
+
+const invoice = {
+  'customer': 'BigCo2',
+  'performances': [
+    {
+      'playID': 'as-like',
+      'audience': 20,
+    },
+  ],
+};
+const plays = {
+  'hamlet': {
+    'name': 'Hamlet',
+    'type': 'tragedy',
+  },
+  'as-like': {
+    'name': 'As You Like It',
+    'type': 'comedy',
+  },
+  'othello': {
+    'name': 'Othello',
+    'type': 'tragedy',
+  },
+};
+console.log(generateHtml(invoice, plays))
 
 module.exports = {
   statement,
