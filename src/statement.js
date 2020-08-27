@@ -62,7 +62,20 @@ function statement (invoice, plays) {
   return generateResult(invoice, plays);
 }
 
+const generateHtml = (invoice, plays) => {
+  let result = `<h1>Statement for ${invoice.customer}</h1>\n` + '<table>\n' +
+  '<tr><th>play</th><th>seats</th><th>cost</th></tr>';
+  for (let perf of invoice.performances) {
+    const play = plays[perf.playID];
+    result += ` <tr><td>${play.name}</td><td>${formatToUs(getThisAmount(play, perf))}</td><td>${perf.audience}</td></tr>\n`
+  }
+  result += '</table>\n'
+  result += `Amount owed is ${formatToUs(calTotalAmount(invoice, plays))}\n`;`<p>Amount owed is <em>${formatToUs(calTotalAmount(invoice, plays))}</em></p>\n`
+  result += `<p>You earned <em>${calVolumeCredits(invoice, plays)}</em> credits</p>\n`
+  return result
+}
 
 module.exports = {
   statement,
+  generateHtml
 };
