@@ -1,4 +1,4 @@
-const formatToUs = (thisAmount)=>{  
+const formatToUs = (thisAmount) => {  
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -28,23 +28,30 @@ const getThisAmount = (play, perf) => {
   return thisAmount
 }
 
-function statement (invoice, plays) {
-  let totalAmount = 0;
+const calVolumeCredits = (invoice, plays) => {
   let volumeCredits = 0;
+  for (let perf of invoice.performances) {
+    const play = plays[perf.playID];
+    volumeCredits += Math.max(perf.audience - 30, 0);
+    if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
+  }
+  return volumeCredits
+}
+
+
+function statement (invoice, plays) {
+  let volumeCredits = 0;
+  let totalAmount = 0;
   let result = `Statement for ${invoice.customer}\n`;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     let thisAmount = getThisAmount(play, perf)
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
-    if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
     //print line for this order
     result += ` ${play.name}: ${formatToUs(thisAmount)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
   result += `Amount owed is ${formatToUs(totalAmount)}\n`;
-  result += `You earned ${volumeCredits} credits \n`;
+  result += `You earned ${calVolumeCredits(invoice, plays)} credits \n`;
   return result;
 }
 
